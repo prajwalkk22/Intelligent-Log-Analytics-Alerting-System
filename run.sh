@@ -1,15 +1,17 @@
 #!/bin/bash
 
-# Exit if any command fails
+# Exit on error
 set -e
 
-# Create logs directory if it doesn't exist
-mkdir -p logs
+# Create output directory if not present
+mkdir -p out
 
-# Compile the Java file
-echo "Compiling Main.java..."
-javac -d out src/Main.java
+# Compile all needed classes
+javac -cp "lib/*" \
+  src/collector/CollectorApp.java \
+  src/collector/LogTailer.java \
+  src/processor/LogParser.java \
+  -d out
 
-# Run the program
-echo "Starting log tailer..."
-java -cp out src.Main
+# Run the main class
+java -cp "out:lib/*" src.collector.CollectorApp
